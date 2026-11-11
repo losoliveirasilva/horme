@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Horme: impulso, a intenção virando movimento (traços de velocidade + avanço) -->
+  <style>.c{stroke:#2f55d4}@media (prefers-color-scheme:dark){.c{stroke:#7aa2ff}}</style>
+  <g class="c" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M15 7.5 24.5 16 15 24.5" stroke-width="3.6"/>
+    <path d="M4 11.5h7M2.5 16h9M4 20.5h7" stroke-width="2.4" opacity=".55"/>
+  </g>
+</svg>

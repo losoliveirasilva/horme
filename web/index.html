@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Horme</title>
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/app.css">
+<script src="/app.js" defer></script>
+</head>
+<body>
+<header class="top">
+  <button class="iconbtn only-narrow" id="navToggle" aria-label="Mostrar filtros" aria-expanded="false" aria-controls="side">
+    <svg aria-hidden="true" width="18" height="18" style="width:1.125rem;height:1.125rem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+  </button>
+  <h1 class="brand"><svg aria-hidden="true" class="logo" viewBox="0 0 32 32" style="width:1.375rem;height:1.375rem" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7.5 24.5 16 15 24.5" stroke-width="3.6"/><path d="M4 11.5h7M2.5 16h9M4 20.5h7" stroke-width="2.4" opacity=".55"/></svg>Horme</h1>
+  <button class="filechip" id="fileChip" title="Arquivo e configurações"></button>
+  <span class="sync" id="sync" role="status" aria-live="polite"></span>
+  <span class="spacer"></span>
+  <label class="search">
+    <svg aria-hidden="true" width="14" height="14" style="width:0.875rem;height:0.875rem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg>
+    <input id="search" type="search" placeholder="Buscar" aria-label="Buscar tarefas" autocomplete="off" spellcheck="false">
+    <kbd>/</kbd>
+  </label>
+  <button class="iconbtn" id="undoBtn" hidden aria-label="Desfazer">
+    <svg aria-hidden="true" width="16" height="16" style="width:1.0rem;height:1.0rem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg>
+  </button>
+  <button class="iconbtn" id="themeBtn" aria-label="Tema"></button>
+  <button class="iconbtn" id="helpBtn" aria-label="Atalhos e sintaxe (?)">
+    <svg aria-hidden="true" width="16" height="16" style="width:1.0rem;height:1.0rem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6v.6"/><path d="M12 17.2v.1"/></svg>
+  </button>
+</header>
+
+<div class="layout" id="layout">
+  <nav class="side" id="side" aria-label="Visões e filtros"></nav>
+
+  <main class="main" id="main">
+    <div class="banner" id="banner" hidden></div>
+    <form class="add" id="addForm" autocomplete="off">
+      <div class="add-row ac-wrap">
+        <span class="add-plus" aria-hidden="true">+</span>
+        <input id="addInput" type="text" spellcheck="false" aria-label="Nova tarefa"
+               placeholder="Nova tarefa — ex.: Pagar aluguel +casa @banco due:amanhã rec:+1m">
+        <kbd class="add-kbd">n</kbd>
+      </div>
+      <div class="add-preview" id="addPreview" aria-live="polite"></div>
+    </form>
+    <div class="toolbar" id="toolbar"></div>
+    <div class="activefilters" id="activeFilters"></div>
+    <div class="list" id="list"></div>
+  </main>
+
+  <aside class="panel" id="panel" aria-label="Detalhes da tarefa" hidden></aside>
+</div>
+
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<dialog id="helpDlg" aria-labelledby="helpTitle">
+  <div class="dlg-head"><h2 id="helpTitle">Atalhos e sintaxe</h2><button class="iconbtn" data-close aria-label="Fechar">✕</button></div>
+  <div class="help-cols">
+    <section>
+      <h3>Teclado</h3>
+      <dl class="keys">
+        <dt><kbd>n</kbd></dt><dd>nova tarefa</dd>
+        <dt><kbd>/</kbd></dt><dd>buscar</dd>
+        <dt><kbd>j</kbd> <kbd>k</kbd> <kbd>↓</kbd> <kbd>↑</kbd></dt><dd>mover seleção</dd>
+        <dt><kbd>Enter</kbd></dt><dd>abrir detalhes</dd>
+        <dt><kbd>e</kbd></dt><dd>editar o texto da tarefa</dd>
+        <dt><kbd>x</kbd></dt><dd>concluir / reabrir</dd>
+        <dt><kbd>p</kbd> <kbd>A</kbd>–<kbd>Z</kbd></dt><dd>prioridade (<kbd>p</kbd> <kbd>-</kbd> remove)</dd>
+        <dt><kbd>d</kbd></dt><dd>vencimento</dd>
+        <dt><kbd>Del</kbd></dt><dd>excluir</dd>
+        <dt><kbd>u</kbd> <kbd>Ctrl</kbd>+<kbd>Z</kbd></dt><dd>desfazer</dd>
+        <dt><kbd>1</kbd>–<kbd>5</kbd></dt><dd>trocar de visão</dd>
+        <dt><kbd>v</kbd></dt><dd>compacto / detalhado</dd>
+        <dt><kbd>Esc</kbd></dt><dd>fechar / limpar</dd>
+      </dl>
+    </section>
+    <section>
+      <h3>todo.txt</h3>
+      <dl class="syntax">
+        <dt><code>(A)</code></dt><dd>prioridade, sempre no começo</dd>
+        <dt><code>+projeto</code> <code>@contexto</code></dt><dd>em qualquer lugar da linha</dd>
+        <dt><code>due:2026-11-20</code></dt><dd>vencimento (na digitação vale <code>due:amanhã</code>, <code>due:sex</code>, <code>due:+3d</code>)</dd>
+        <dt><code>t:2026-11-18</code></dt><dd>só aparece a partir dessa data</dd>
+        <dt><code>t:-3d</code></dt><dd>aparece 3 dias antes do vencimento</dd>
+        <dt><code>rec:1w</code></dt><dd>repete 1 semana depois de <b>concluir</b></dd>
+        <dt><code>rec:+1w</code></dt><dd>repete 1 semana depois do <b>vencimento anterior</b></dd>
+        <dt><code>day:31</code></dt><dd>com <code>rec:</code> mensal ou anual: sempre no dia 31, ou no último dia do mês (extensão do Horme; o Tuxedo preserva)</dd>
+        <dt>unidades</dt><dd><code>d</code> dias, <code>b</code> dias úteis, <code>w</code> semanas, <code>m</code> meses, <code>y</code> anos</dd>
+        <dt><code>chave:valor</code></dt><dd>outros metadados: preservados como estão</dd>
+      </dl>
+    </section>
+  </div>
+</dialog>
+
+<dialog id="fileDlg" aria-labelledby="fileTitle">
+  <div class="dlg-head"><h2 id="fileTitle">Arquivo</h2><button class="iconbtn" data-close aria-label="Fechar">✕</button></div>
+  <div id="fileBody"></div>
+</dialog>
+</body>
+</html>

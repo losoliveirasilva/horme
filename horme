@@ -1,0 +1,10 @@
+#!/usr/bin/env python3
+"""Horme — gerenciador de tarefas todo.txt no navegador, só em localhost."""
+import os
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
+
+from server import main  # noqa: E402
+
+sys.exit(main())

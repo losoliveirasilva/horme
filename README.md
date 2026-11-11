@@ -1,6 +1,11 @@
-# Horme
+<h1 align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/logo-dark.svg">
+    <img src="docs/logo-light.svg" alt="Horme" height="64">
+  </picture>
+</h1>
 
-**English** · [Português](README.pt-BR.md)
+<p align="center"><strong>English</strong> · <a href="README.pt-BR.md">Português</a></p>
 
 **Hormé** (Ὁρμή) is a minor deity in Greek mythology who personifies the impulse to act: initiative,
 effort, and the energy that sets something in motion. She has no myths of her own; she is a personified
@@ -12,6 +17,10 @@ Hence the name: a task written down is an intention, and Horme exists to turn it
 
 A personal task manager built on `todo.txt`, opened in the browser and served only on `localhost`.
 The file is the single source of truth: there is no database, cache, or custom format.
+
+![Task list grouped by due date, in the light theme](docs/screenshot-list.png)
+
+![Side panel with a recurring task's details, in the dark theme](docs/screenshot-details.png)
 
 ```sh
 ./horme --open            # opens http://localhost:8788/

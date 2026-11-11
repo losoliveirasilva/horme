@@ -1,6 +1,11 @@
-# Horme
+<h1 align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/logo-dark.svg">
+    <img src="docs/logo-light.svg" alt="Horme" height="64">
+  </picture>
+</h1>
 
-[English](README.md) · **Português**
+<p align="center"><a href="README.md">English</a> · <strong>Português</strong></p>
 
 **Hormé** (Ὁρμή) é uma divindade menor da mitologia grega que personifica o impulso para agir: a
 iniciativa, o esforço e a energia que põem algo em movimento. Não tem mitos próprios; é uma força
@@ -12,6 +17,10 @@ Daí o nome: uma tarefa anotada é uma intenção, e o Horme existe para transfo
 
 Gerenciador de tarefas pessoal sobre `todo.txt`, aberto no navegador e servido só em `localhost`.
 O arquivo é a única fonte de verdade: não há banco de dados, cache ou formato próprio.
+
+![Lista de tarefas agrupada por vencimento, no tema claro](docs/screenshot-list.png)
+
+![Painel lateral com os detalhes de uma tarefa recorrente, no tema escuro](docs/screenshot-details.png)
 
 ```sh
 ./horme --open            # abre http://localhost:8788/

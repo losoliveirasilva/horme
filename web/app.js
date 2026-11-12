@@ -279,13 +279,35 @@ function tokenHtml(x) {
     case 'kv': return `<span class="tk-kv">${esc(x.v)}</span>`;
     case 'url': {
       const u = safeUrl(x.v);
-      return u ? `<a class="tk-url" href="${esc(u)}" target="_blank" rel="noopener noreferrer" title="${esc(u)}">${esc(shortUrl(u))}</a>` : esc(x.v);
+      return u ? linkHtml(u, shortUrl(u)) : esc(x.v);
     }
     default: return esc(x.v);
   }
 }
-const descHtml = toks => toks.map(tokenHtml).join(' ');
-function plainDesc(t) { return splitTokens(t.tokens).desc.map(x => x.v).join(' '); }
+// Link markdown [rótulo](url): exibe só o rótulo, clicável. A URL aceita um nível de parênteses (ex.: Wikipedia).
+const MDLINK = String.raw`\[([^\[\]]+)\]\((https?:\/\/(?:[^\s()]|\([^\s()]*\))+)\)`;
+const linkHtml = (u, label) => `<a class="tk-url" href="${esc(u)}" target="_blank" rel="noopener noreferrer" title="${esc(u)}">${esc(label)}</a>`;
+function descHtml(toks) {
+  const out = [];
+  for (let i = 0; i < toks.length; i++) {
+    if (toks[i].v.includes('[')) {
+      // o rótulo pode ter espaços (vários tokens); a URL fica no primeiro token com "](http"
+      const j = toks.findIndex((x, n) => n >= i && n < i + 30 && /\]\(https?:\/\//i.test(x.v));
+      if (j >= 0) {
+        const s = toks.slice(i, j + 1).map(x => x.v).join(' ');
+        const m = new RegExp(MDLINK, 'i').exec(s);
+        if (m && m.index < toks[i].v.length) {  // o link tem que começar neste token
+          out.push(esc(s.slice(0, m.index)) + linkHtml(m[2], m[1]) + esc(s.slice(m.index + m[0].length)));
+          i = j;
+          continue;
+        }
+      }
+    }
+    out.push(tokenHtml(toks[i]));
+  }
+  return out.join(' ');
+}
+function plainDesc(t) { return splitTokens(t.tokens).desc.map(x => x.v).join(' ').replace(new RegExp(MDLINK, 'gi'), '$1'); }
 
 const UNIT = { d: ['dia', 'dias'], b: ['dia útil', 'dias úteis'], w: ['semana', 'semanas'], m: ['mês', 'meses'], y: ['ano', 'anos'] };
 const EVERY1 = { d: 'todo dia', b: 'todo dia útil', w: 'toda semana', m: 'todo mês', y: 'todo ano' };
